@@ -6,8 +6,7 @@
 
 #include "TextEditor.h"
 
-#define IMGUI_DEFINE_MATH_OPERATORS
-#include "imgui.h" // for imGui::GetCurrentWindow()
+#include "imgui.h"
 
 // TODO
 // - multiline comments vs single-line: latter is blocking start of a ML
@@ -419,7 +418,7 @@ TextEditor::Coordinates TextEditor::FindWordEnd(const Coordinates & aFrom) const
 	if (cindex >= (int)line.size())
 		return at;
 
-	bool prevspace = (bool)isspace(line[cindex].mChar);
+	bool prevspace = isspace(line[cindex].mChar) != 0;
 	auto cstart = (PaletteIndex)line[cindex].mColorIndex;
 	while (cindex < (int)line.size())
 	{
@@ -453,7 +452,7 @@ TextEditor::Coordinates TextEditor::FindNextWord(const Coordinates & aFrom) cons
 	if (cindex < (int)mLines[at.mLine].size())
 	{
 		auto& line = mLines[at.mLine];
-		isword = isalnum(line[cindex].mChar);
+		isword = isalnum(line[cindex].mChar) != 0;
 		skip = isword;
 	}
 
@@ -468,7 +467,7 @@ TextEditor::Coordinates TextEditor::FindNextWord(const Coordinates & aFrom) cons
 		auto& line = mLines[at.mLine];
 		if (cindex < (int)line.size())
 		{
-			isword = isalnum(line[cindex].mChar);
+			isword = isalnum(line[cindex].mChar) != 0;
 
 			if (isword && !skip)
 				return Coordinates(at.mLine, GetCharacterColumn(at.mLine, cindex));
